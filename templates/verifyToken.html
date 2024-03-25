@@ -1,0 +1,154 @@
+{% extends "template1.html" %}
+
+{%block title%} Verify Token{%endblock%}
+
+{%block body%}
+
+<body class="bg-gray-200 h-screen w-full">
+
+    <div class="bg-neutral-200 dark:bg-neutral-700 pt-24 h-screen shadow-md ">
+        <h1 class="font-poppins pt-6 text-center text-2xl font-semibold mb-4 text-white">Enter The Token Received by
+            Email</h1>
+
+        <div class=" mt-12 grid grid-cols-2 items-center  text-center text-pink-500 font-poppins text-2xl">
+            <div class="flex justify-end px-4 ">
+                <img src="{{url_for('static', filename ='Icons/timer.png')}}" class="h-12">
+            </div>
+            <div id="timer" class="justify-start text-left"> 05:00</div>
+        </div>
+
+        <form action="{{url_for('auth.change_password')}}" method="post" onsubmit="return checkTokenValidity()">
+
+            <div>
+                <div class="mt-12 font-poppins flex justify-center items-center space-x-12 ">
+                    <!-- Input Boxes -->
+                    <input type="text" required name="char1" maxlength="1"
+                        class="w-10 scale-150 p-2 border focus:scale-[2] rounded text-center focus:outline-none focus:border-pink-500 focus:bg-black focus:text-white shadow-lg transition-all duration-300 focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
+                        oninput="moveToNextInput(this, 'char2')">
+                    <input type="text" required name="char2" maxlength="1"
+                        class="w-10 scale-150 p-2 border focus:scale-[2] rounded text-center focus:outline-none focus:border-pink-500 focus:bg-black focus:text-white shadow-lg transition-all duration-300 focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
+                        oninput="moveToNextInput(this, 'char3')">
+                    <input type="text" required name="char3" maxlength="1"
+                        class="w-10 scale-150 p-2 border focus:scale-[2] rounded text-center focus:outline-none focus:border-pink-500 focus:bg-black focus:text-white shadow-lg transition-all duration-300 focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
+                        oninput="moveToNextInput(this, 'char4')">
+                    <input type="text" required name="char4" maxlength="1"
+                        class="w-10 scale-150 p-2 border focus:scale-[2] rounded text-center focus:outline-none focus:border-pink-500 focus:bg-black focus:text-white shadow-lg transition-all duration-300 focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50"
+                        oninput="moveToNextInput(this, 'char5')">
+                    <input type="text" required name="char5" maxlength="1"
+                        class="w-10 scale-150 p-2 border focus:scale-[2] rounded text-center focus:outline-none focus:border-pink-500 focus:bg-black focus:text-white shadow-lg transition-all duration-300 focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50">
+                </div>
+
+                <!-- Display an error message element -->
+                <div id="error-message" class="mt-24 text-pink-400 text-center font-bold"></div>
+
+                <div class="mt-24 flex  justify-center items-center font-poppins  ">
+                    <button type="submit"
+                        class="bg-white rounded-full text-pink-700 hover:text-white hover:bg-pink-700 hover:scale-150 transition-all duration-300 shadow-md  px-4 py-2 ">
+                        Submit
+                    </button>
+                </div>
+
+
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <script src="{{url_for('static', filename ='JS/verifyToken.js')}}">
+
+    </script>
+
+    <script>
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = 0;
+                    // Redirect to the Flask route after the timer reaches 0
+                    window.location.replace("{{ url_for('auth.login') }}");
+                }
+            }, 1000);
+        }
+
+        window.onload = function () {
+            var thirtySeconds = 5 * 60;
+            var display = document.querySelector('#timer');
+            startTimer(thirtySeconds, display);
+        };
+    </script>
+
+    <script>
+        // Get the hashed token and expiration time from the Flask template
+        const hashedToken = "{{ token }}";
+        const expirationTime = new Date("{{ expiration_time }}");
+
+        let isTokenValidated = false;  // Flag to track token validation status
+
+        function checkTokenValidity() {
+            const currentTime = new Date();
+
+            // Collect the individual characters entered by the user
+            const char1 = document.getElementsByName("char1")[0].value;
+            const char2 = document.getElementsByName("char2")[0].value;
+            const char3 = document.getElementsByName("char3")[0].value;
+            const char4 = document.getElementsByName("char4")[0].value;
+            const char5 = document.getElementsByName("char5")[0].value;
+
+            // Concatenate these characters to form the complete token
+            const enteredToken = char1 + char2 + char3 + char4 + char5;
+
+
+            // Check if the entered token is correct and hasn't expired
+            if (currentTime < expirationTime && enteredToken === hashedToken) {
+                console.log("Token is correct and hasn't expired.");
+
+                // Redirect to a different page
+                window.location.replace("{{ url_for('auth.change_password') }}");
+                return true;
+            } else {
+                console.log("Token has expired or is incorrect.");
+
+                // Display an error message to the user
+                const errorMessageElement = document.getElementById("error-message");
+                errorMessageElement.textContent = "Invalid token. Please try again.";
+                isTokenValidated = true;
+                return false;
+            }
+        }
+
+
+        // Check token validity when the button is clicked
+        function onSubmitButtonClick() {
+            if (!isTokenValidated) {
+                checkTokenValidity();
+            }
+
+        }
+
+    </script>
+
+
+
+
+</body>
+
+
+
+
+
+
+
+{%endblock%}
+
+{%block footer_content%} {%endblock%}

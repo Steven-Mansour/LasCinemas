@@ -1,0 +1,92 @@
+{% extends "index.html" %}
+
+{% block title %}{% endblock %}
+
+{%block header_content%}
+
+<div class="h-36">
+
+    <div class="justify-around font-poppins flex flex-wrap  place-items-center justify-center max-w-full h-full mx-auto text-center subpixel-antialiased "
+        style=" background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)">
+
+        <div
+            class="flex ml-4 flex-1 text-center items-center justify-around font-poppins text-5xl min-w-[25rem]  font-bold text-gray-900 ">
+            <img src="{{url_for('static', filename = 'Images/Logo.png')}} " class=" w-16 h-16  object-cover">
+            Las Cinemas
+
+        </div>
+
+        <div class="flex flex-none lg:flex-1"> </div>
+
+        <div class=" text-white  flex flex-1 px-1 md:px-12 justify-around ">
+            <!--name-->
+            <div
+                class="flex h-12 rounded-xl  hover:max-w-fit hover:w-full max-w-[8rem] mx-1 shadow-md shadow-gray-800 bg-gray-200 p-1">
+                <div
+                    class="h-full w-full p-2 rounded-md truncate md:whitespace-nowrap sm:whitespace-normal overflow-hidden flex bg-gray-800">
+                    {% block name %}{% endblock %}
+                </div>
+            </div>
+
+
+            <!--First button-->
+            <a href="{{url_for('history')}}">
+                <div
+                    class="cursor-pointer max-w-[7rem] flex h-12 rounded-xl mx-1   shadow-md shadow-gray-800   bg-gray-200 p-1 ">
+                    <div
+                        class="h-full w-full p-2 rounded-md md:whitespace-nowrap sm:whitespace-normal overflow-hidden flex bg-gray-800 ">
+                        {%block balance%}{%endblock%}
+                    </div>
+                </div>
+            </a>
+
+            <!--Second button-->
+            <a href="{{url_for('home')}}">
+                <div
+                    class="cursor-pointer flex max-w-[5rem] h-12 rounded-xl mx-1  shadow-md shadow-gray-800   bg-gray-200 p-1 ">
+                    <div
+                        class="h-full w-full p-2 rounded-md md:whitespace-nowrap sm:whitespace-normal overflow-hidden flex bg-gray-800 ">
+                        Home
+                    </div>
+                </div>
+            </a>
+
+
+
+
+            <!--Third button-->
+            <a href="{{url_for('about_us')}}">
+                <div
+                    class="cursor-pointer flex h-12 min-w-[6.2rem] max-w-[8rem] rounded-xl mx-1  shadow-md shadow-gray-800   bg-gray-200 p-1 ">
+                    <div
+                        class="h-full w-full p-2 rounded-md md:whitespace-nowrap sm:whitespace-normal overflow-hidden flex bg-gray-800 ">
+                        About Us
+                    </div>
+                </div>
+            </a>
+
+            <!--Fourth button-->
+            <a href="{{url_for('auth.logout')}}">
+                <div class="cursor-pointer flex h-12 rounded-xl mx-1  shadow-md shadow-gray-800   bg-gray-200 p-1 ">
+                    <div
+                        class="h-full w-full p-2 rounded-md md:whitespace-nowrap sm:whitespace-normal overflow-hidden flex bg-gray-800 ">
+                        Logout
+                    </div>
+                </div>
+            </a>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+{%endblock%}
+
+{% block body %}
+
+
+{% endblock %}
+
+{% block footer_content %}{% endblock %}

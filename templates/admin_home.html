@@ -1,0 +1,249 @@
+{% extends "template1.html" %}
+
+{%block title%} Admin Home {%endblock%}
+
+
+{%block body%}
+<div class="p-24">
+    <h1 class="mb-16 text-4xl px-6 lg:px-0 font-poppins"> Welcome {{name}}!</h1>
+
+    <!--ADD balance div-->
+    <div class="text-3xl font-poppins mb-6 mx-6">Add Balance</div>
+    <form action="{{url_for('updateBalance')}}" method="POST" id="updateBalance">
+        <div
+            class=" mb-16 overflow-hidden font-poppins text-2xl flex justify-between justify-items-center items-center flex-col lg:flex-row p-6 rounded-md shadow-md min-w-full md:min-w-0">
+            <div class="flex lg:w-2/5 p-4 px-6 justify-center lg:justify-normal">
+                <input type="text" id="username" name="username" placeholder="Username"  oninput="getUsernames(this.value)"
+                    class="text-2xl border-2 border-pink-700 rounded-md w-4/5">
+                    <div id="usernameSuggestionsContainer"
+                    class="username-container absolute  mt-16 z-10 w-3/12 max-h-64 overflow-y-auto border border-gray-300 bg-white shadow rounded-b-md hidden">
+                    <ul class="list-none p-2">
+                        <!-- Suggestions will be dynamically populated here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex lg:w-2/5 p-4 px-6 justify-center lg:justify-normal">
+                <input type="number" id="balance" name="balance" placeholder="Balance to be added"
+                    class="text-2xl border-2 border-pink-700 rounded-md w-4/5">
+            </div>
+
+            <div class="flex lg:w-1/5 p-4 px-6 justify-center lg:justify-normal">
+                <button type="submit" onclick ="submitForm('updateBalance')"
+                    class="bg-pink-700 hover:bg-pink-900 text-white rounded-md py-2 px-4 w-full">Submit</button>
+            </div>
+        </div>
+        <!--
+        {% if error_message %}
+        <div class="text-red-500">{{ error_message }}</div>
+        {% endif %}
+        -->
+    </form>
+
+
+    <!--ADD Movie to DB using movie name-->
+    <div class="text-3xl font-poppins mb-6 mx-6">Add Movie to the Database Using Title</div>
+    <form action="{{url_for('addMovie')}}" method="POST"  id ="addMovie">
+        <div
+            class="mb-16 overflow-hidden font-poppins text-2xl flex justify-between justify-items-center items-center flex-col lg:flex-row p-6 rounded-md shadow-md min-w-full md:min-w-0">
+            <div class="flex lg:w-4/5 p-4 px-6 justify-center lg:justify-normal">
+                <input required type="text" id="movieTitle" name="movieTitle" placeholder="Movie Title"
+                    class="text-2xl border-2 border-pink-700 rounded-md w-4/5 lg:w-3/5">
+            </div>
+
+            <div class="flex lg:w-1/5 p-4 px-6 justify-center lg:justify-normal">
+                <button type="submit" onclick ="submitForm('addMovie')"
+                    class="bg-pink-700 hover:bg-pink-900 text-white rounded-md py-2 px-4 w-full">Submit</button>
+            </div>
+        </div>
+    </form>
+
+
+    <!--ADD Movie to DB using movie IMDBID-->
+    <div class=" text-3xl font-poppins mb-6 mx-6">Add Movie to the Database Using IMDBID</div>
+    <form action="{{url_for('addMovieUsingImdbId')}}" method="POST">
+        <div
+            class="mb-16 overflow-hidden font-poppins text-2xl flex justify-between justify-items-center items-center flex-col lg:flex-row p-6 rounded-md shadow-md min-w-full md:min-w-0">
+            <div class="flex lg:w-4/5 p-4 px-6 justify-center lg:justify-normal">
+                <input required type="text" id="movieID" name="movieID" placeholder="Movie IMDB ID"
+                    class="text-2xl border-2 border-pink-700 rounded-md w-4/5 lg:w-2/5">
+            </div>
+
+            <div class="flex lg:w-1/5 p-4 px-6 justify-center lg:justify-normal">
+                <button type="submit"
+                    class="bg-pink-700 hover:bg-pink-900 text-white rounded-md py-2 px-4 w-full">Submit</button>
+            </div>
+        </div>
+    </form>
+
+
+    <!--Create new Screenings to DB using movie name-->
+    <div class="text-3xl font-poppins mb-6 mx-6">Create New Screenings Using Title</div>
+    <form action="{{url_for('createScreeningUsingIMDBID')}}" method="POST" onsubmit="return validateForm()">
+        <div
+            class=" mb-16  font-poppins text-2xl flex justify-between justify-items-center items-center flex-col xl:flex-row p-6 rounded-md shadow-md min-w-full md:min-w-0">
+            <div class="flex xl:w-3/12 p-4 px-6 justify-center lg:justify-normal relative">
+                <input type="text" id="screeningMovieTitle" name="screeningMovieTitle" placeholder="Movie Title" required
+                    class="text-2xl border-2 border-pink-700 rounded-md w-full" oninput="getSuggestions(this.value)">
+                <div id="suggestionsContainer"
+                    class="suggestions-container absolute left-0 mt-16 z-10 w-full max-h-64 overflow-y-auto border border-gray-300 bg-white shadow rounded-b-md hidden">
+                    <ul class="list-none p-2">
+                        <!-- Suggestions will be dynamically populated here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex xl:w-2/12 p-4 px-6 justify-center lg:justify-normal">
+                <input type="number" id="room" name="room" placeholder="Room ID" required
+                    class="text-2xl border-2 border-pink-700 rounded-md w-full" min="1" max="4">
+            </div>
+
+            <div class="flex xl:w-2/12 p-4 px-6 justify-center lg:justify-normal">
+                <label for="startTime" class="text-lg text-gray-600 mb-2"></label>
+                <select id="startTime" name="startTime" required
+                    class="text-2xl border-2 border-pink-700 rounded-md w-full">
+                    <option value="14:00:00">14:00:00</option>
+                    <option value="18:00:00">18:00:00</option>
+                    <option value="22:00:00">22:00:00</option>
+                </select>
+            </div>            
+
+            <div class="flex xl:w-2/12 p-4 px-6 justify-center lg:justify-normal">
+                <input type="date" id="date" name="date" placeholder="Date" required
+                    class="text-2xl border-2 border-pink-700 rounded-md w-full">
+            </div>
+
+            <div class="flex xl:w-1/6 p-4 px-6 justify-center lg:justify-normal">
+                <input type="number" id="numberOfScreeningDays" name="numberOfScreeningDays" placeholder="# of Days" required
+                    class="text-2xl border-2 border-pink-700 rounded-md w-full" min="0">
+            </div>
+
+            <div class="flex xl:w-1/6 p-4 px-6 justify-center lg:justify-normal">
+                <button type="submit"
+                    class="bg-pink-700 hover:bg-pink-900 text-white rounded-md py-2 px-4 w-full">Submit</button>
+            </div>
+
+
+        </div>
+    </form>
+
+    <form action="{{url_for('manage_screenings')}}" method="GET" class="mt-24 w-full">
+        <div class="font-poppins text-center text-2xl flex items-center justify-center">
+            <button type="submit"
+                class=" text-center w-3/12 min-w-fit h-16 bg-orange-700 hover:bg-pink-900 text-white rounded-lg py-2 px-4 hover:scale-[1.4] trasition-all duration-300">Manage Screenings</button>
+        </div>
+    </form>
+
+    <form action="{{url_for('auth.logout')}}" method="POST" class="mt-24 w-full">
+        <div class="font-poppins text-center text-2xl flex items-center justify-center">
+            <button type="submit"
+                class=" text-center w-3/12 min-w-fit h-16 bg-orange-700  hover:bg-pink-900 text-white rounded-lg py-2 px-4 hover:scale-[1.4] trasition-all duration-300">Logout</button>
+        </div>
+    </form>
+
+    {% if error_message %}
+        <script>
+        alert("Error: {{ error_message|safe }}");
+        </script>
+    {% endif %}
+  
+    {% if success_message %}
+        <script>
+        alert("Success: {{ success_message|safe }}");
+        </script>
+    {% endif %}
+
+    <script>
+        function getSuggestions(query) {
+            fetch(`/get_suggestions?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('suggestionsContainer');
+                    const list = document.querySelector('#suggestionsContainer ul');
+                    list.innerHTML = '';
+
+                    data.forEach((suggestion, index) => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = suggestion;
+                        listItem.classList.add('p-2', 'cursor-pointer', 'hover:bg-gray-200');
+
+                        listItem.addEventListener('click', () => {
+                            document.getElementById('screeningMovieTitle').value = suggestion;
+                            container.classList.add('hidden');
+                        });
+                        list.appendChild(listItem);
+                    });
+
+                    if (data.length > 0) {
+                        container.classList.remove('hidden');
+                    } else {
+                        container.classList.add('hidden');
+                    }
+                });
+        }
+        // Close suggestions when clicking outside the input and suggestions container
+        document.addEventListener('click', (event) => {
+            const container = document.getElementById('suggestionsContainer');
+            const inputElement = document.getElementById('screeningMovieTitle');
+
+            if (!event.target.closest('.flex') && event.target !== inputElement) {
+                container.classList.add('hidden');
+            }
+        });
+
+
+        function getUsernames(query) {
+            fetch(`/get_usernames?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('usernameSuggestionsContainer');
+                    const list = document.querySelector('#usernameSuggestionsContainer ul');
+                    list.innerHTML = '';
+
+                    data.forEach((suggestion, index) => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = suggestion;
+                        listItem.classList.add('p-2', 'cursor-pointer', 'hover:bg-gray-200');
+
+                        listItem.addEventListener('click', () => {
+                            document.getElementById('username').value = suggestion;
+                            container.classList.add('hidden');
+                        });
+                        list.appendChild(listItem);
+                    });
+
+                    if (data.length > 0) {
+                        container.classList.remove('hidden');
+                    } else {
+                        container.classList.add('hidden');
+                    }
+                });
+        }
+        // Close suggestions when clicking outside the input and suggestions container
+        document.addEventListener('click', (event) => {
+            const container = document.getElementById('usernameSuggestionsContainer');
+            const inputElement = document.getElementById('username');
+
+            if (!event.target.closest('.flex') && event.target !== inputElement) {
+                container.classList.add('hidden');
+            }
+        });
+    </script>
+    <!--Prevent resubmission  on refresh-->
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+    
+    
+    
+
+
+</div>
+
+
+
+{%endblock%}
+
+{%block footer_content%} {%endblock%}

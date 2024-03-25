@@ -1,0 +1,363 @@
+{%extends "template2.html"%}
+
+{%block title%} Home {%endblock%}
+
+{%block name%} {{username}} {%endblock%}
+{%block balance%} ${{balance}} {%endblock%}
+
+{%block body%}
+<link href="{{url_for('static', filename='CSS/style.css')}}" rel="stylesheet">
+
+<body>
+    <!--image slider start-->
+    <div class="slider fade-in ">
+        <div class="slides ">
+            <!--radio buttons start-->
+            <input type="radio" name="radio-btn" id="radio1">
+            <input type="radio" name="radio-btn" id="radio2">
+            <input type="radio" name="radio-btn" id="radio3">
+            <input type="radio" name="radio-btn" id="radio4">
+            <input type="radio" name="radio-btn" id="radio5">
+            <!--radio buttons end-->
+            <!--slide images start-->
+            <div class="slide first ">
+                <img src="{{url_for('static', filename = 'Images/Carousel/StarWars.jpg')}}" alt="">
+            </div>
+            <div class="slide">
+                <img src="{{url_for('static', filename = 'Images/Carousel/Divergent.jpg')}}" alt="">
+            </div>
+            <div class="slide">
+                <img src="{{url_for('static', filename = 'Images/Carousel/Dune.jpg')}}" alt="">
+            </div>
+            <div class="slide">
+                <img src="{{url_for('static', filename = 'Images/Carousel/HungerGames.jpg')}}" alt="">
+            </div>
+
+            <div class="slide">
+                <img src="{{url_for('static', filename = 'Images/Carousel/Interstellar.jpg')}}" alt="">
+            </div>
+
+            <div
+                class="absolute  top-0 left-0 w-full h-full bg-black opacity-80 flex items-center justify-center mask-image">
+                <img src="{{url_for('static', filename='Images/Logo+slogan.png')}}"
+                    class=" max-w-full lg:scale-[1.4] max-h-full">
+            </div>
+            <!--slide images end-->
+
+        </div>
+
+    </div>
+    <!--image slider end-->
+
+    <!-- Screening and reviews Div-->
+    <div class=" shadow-2xl shadow-gray-800 relative h-auto bg-neutral-200 dark:bg-neutral-700 ">
+        <div class=" grid grid-cols-1 gap-y-24 md:grid-cols-3 p-16 text-4xl font-poppins text-white ">
+            <div class="fade-in flex flex-col col-span-2 items-center justify-center">
+                Want to visit Las Cinemas? Check the available screenings for this week!
+            </div>
+            <a href="{{url_for('screenings')}}">
+                <div class=" fade-in flex flex-row items-center justify-center">
+                    <button
+                        class=" shadow-xl shadow-gray-800 col-span-1  h-32 w-96 rounded-full bg-pink-500 hover:bg-pink-700 transition-all duration-150">
+                        Check Movies
+                    </button>
+                </div>
+            </a>
+            <div class="fade-in flex flex-col col-span-2 items-center justify-center">
+                Did you enjoy your time at Las Cinemas? Make sure to leave or check other reviews.
+            </div>
+            <a href="{{url_for('reviews')}}">
+                <div class="fade-in flex flex-row items-center justify-center">
+                        <button
+                            class="shadow-xl shadow-gray-800 col-span-1  h-32 w-96 rounded-full bg-[#ee7724] hover:bg-orange-700 transition-all duration-150">
+                            Reviews
+                        </button>
+                </div>
+        </a>
+
+        </div>
+    </div>
+    <div id ="movies" class="hidden" >{{info['total_movies_displayed']}}</div>
+    <div id ="clients" class="hidden" >{{info['total_clients']}}</div>
+    <div id ="reviews" class="hidden" >{{info['total_reviews']}}</div>
+
+    <!--STATS-->
+    <div
+        class="[text-shadow:_2px_2px_1px_rgb(0_0_0_/_50%)] bg-gradient-to-r py-28 pb-12 p-6 from-[#ee7724] via-[#dd3675] to-[#b44593]">
+        <div
+            class=" font-poppins text-4xl grid grid-col-1 lg:grid-col-3 gap-y-12 lg:gap-y-0 gap-x-4 rounded-xl p-6 grid-flow-row lg:grid-flow-col grid-row-1 m-6 ">
+            <div class=" fade-in col-span-1 text-center">
+                <div class=>
+                    Movies Displayed:
+                </div>
+                <div class="text-white mt-6" id="moviesCounter">
+                    0
+                </div>
+            </div>
+
+            <div class="fade-in col-span-1 text-center">
+                <div>
+                    Cinema Members:
+                </div>
+                <div class="text-white mt-6" id="membersCounter">
+                    0
+                </div>
+            </div>
+
+            <div class="fade-in col-span-1 text-center">
+                <div>
+                    Reviews Written:
+                </div>
+                <div class="text-white mt-6" id="reviewsCounter">
+                    0
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="pt-6 pb-12 flex justify-center bg-gradient-to-r  from-[#ee7724] via-[#dd3675] to-[#b44593]">
+        <div class="h-0.5 w-7/12   bg-neutral-200 dark:bg-neutral-700">
+
+        </div>
+    </div>
+
+
+    <!--FAQ-->
+    <div
+        class="flex pb-4 justify-center md:justify-start  overflow-hidden h-auto bg-gradient-to-r from-[#ee7724] via-[#dd3675] to-[#b44593] ">
+        <div class="px-6 mt-12 font-poppins md:mx-24 text-xl w-10/12">
+            <div class="fade-in text-3xl text-center  md:text-left ">
+                FAQ
+            </div>
+            <div class="fade-in mt-2 text-center text-2xl md:text-left text-white">
+                1. How much are the ticket prices?
+            </div>
+
+            <div class="fade-in mt-2 ml-0 md:ml-6 text-center md:text-left ">
+                The standard ticket price is $4.
+            </div>
+
+            <div class="fade-in mt-2 text-2xl text-center md:text-left  text-white">
+                2. What types of screenings do you offer?
+            </div>
+
+            <div class="fade-in mt-2 ml-0 md:ml-6 text-center md:text-left">
+                We offer a variety of screenings, including IMAX and Gold screenings
+            </div>
+
+            <div class="fade-in mt-2 text-2xl text-center md:text-left  text-white">
+                3. Are sweets allowed in the theaters?
+            </div>
+
+            <div class="fade-in mt-2 ml-0 md:ml-6 text-center md:text-left">
+                Yes, you are welcome to bring sweets into the theaters. We want you to enjoy your favorite
+                treats
+                during the movie!
+            </div>
+
+            <div class="fade-in mt-2 text-2xl text-center md:text-left  text-white">
+                4. Can I bring my baby to any movie?
+            </div>
+
+
+            <div class=" fade-in mt-2 ml-0 md:ml-6 text-center md:text-left">
+                Babies are welcome to screenings specifically designated for little ones. For other regular
+                screenings, we recommend leaving the littlest moviegoers at home to ensure a comfortable experience for
+                all
+                patrons.
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <!--IMAX DIV-->
+    <div class="bg-gradient-to-r  p-6 from-[#ee7724] via-[#dd3675] to-[#b44593]">
+        <div
+            class="shadow-xl shadow-gray-900 grid grid-col-1 sm:grid-col-3 gap-y-4 sm:gap-y-0 gap-x-4 rounded-xl p-6 grid-flow-row sm:grid-flow-col grid-row-1 m-6 bg-neutral-200 dark:bg-neutral-700">
+            <div class="fade-in col-span-1">
+                <img src="{{url_for('static', filename ='Images/Imax.jpg')}}" class="contain h-full">
+            </div>
+
+            <div class="fade-in col-span-1">
+                <img src="{{url_for('static', filename ='Images/Imax3D.jpg')}}" class="h-full contain">
+            </div>
+
+            <div class="fade-in col-span-1">
+                <img src="{{url_for('static', filename ='Images/Gold.jpg')}}" class="h-full contain">
+            </div>
+
+        </div>
+    </div>
+
+    <!--Links to Socials-->
+    <div class="overflow-hidden h-auto bg-gradient-to-r from-[#ee7724] via-[#dd3675] to-[#b44593] pb-4">
+        <div class=" p-12 grid font-poppins grid-cols-2 md:grid-cols-6 items-center justify-center gap-x-12 gap-y-4">
+            <div class=" fade-in2 p-4 rounded-md flex flex-col items-center justify-center   col-span-2">
+                <div class="text-center">telephone: +961 00 000 000</div>
+                <div class="text-center">E-mail: LasCinemas@gmail.com</div>
+                <div class="text-center">Location: Anfeh</div>
+            </div>
+
+            <div class="fade-in2 col-span-1  flex items-center justify-center">
+                <button>
+                    <img src="{{url_for('static', filename ='Icons/facebook.png')}}" class="h-16 object-contain"
+                        alt="Facebook Icon">
+                </button>
+            </div>
+
+            <div class="fade-in2  col-span-1 flex items-center justify-center">
+                <button>
+                    <img src="{{url_for('static', filename ='Icons/instagram.png')}}" class="h-16 object-contain"
+                        alt="Instagram Icon">
+                </button>
+            </div>
+
+            <div class="fade-in2  col-span-1 flex items-center justify-center">
+                <button>
+                    <img src="{{url_for('static', filename ='Icons/twitter.png')}}" class="h-16 object-contain"
+                        alt="twitter Icon">
+                </button>
+            </div>
+
+            <div class="fade-in2  col-span-1 flex items-center justify-center">
+                <button>
+                    <img src="{{url_for('static', filename ='Icons/tik-tok.png')}}" class="h-16 object-contain"
+                        alt="tiktok Icon">
+                </button>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+    </div>
+
+    <!--Carousel-->
+    <script type="text/javascript">
+        var counter = 1;
+        setInterval(function () {
+            document.getElementById('radio' + counter).checked = true;
+            counter++;
+            if (counter > 5) {
+                counter = 1;
+            }
+        }, 3000);
+    </script>
+    <!--fade in transitions-->
+    <script type="text/javascript">
+        // Add a class to elements with the "fade-in" class when they come into view
+        function handleScrollAppear() {
+            var elements = document.querySelectorAll('.fade-in2');
+            elements.forEach(function (element) {
+                var rect = element.getBoundingClientRect();
+                var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+                if (rect.top <= windowHeight * 0.75) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Trigger handleScrollAppear on scroll
+        window.addEventListener('scroll', handleScrollAppear);
+        window.addEventListener('load', handleScrollAppear); // Trigger on page load as well
+    </script>
+
+    <script type="text/javascript">
+        // Add a class to elements with the "fade-in" class when they come into view
+        function handleScrollAppear() {
+            var elements = document.querySelectorAll('.fade-in');
+            elements.forEach(function (element) {
+                var rect = element.getBoundingClientRect();
+                var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+                if (rect.top <= windowHeight * 0.75) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Trigger handleScrollAppear on scroll
+        window.addEventListener('scroll', handleScrollAppear);
+        window.addEventListener('load', handleScrollAppear); // Trigger on page load as well
+    </script>
+
+    <!--Counting effect-->
+    <script>
+        function countToNumber(elementId, targetNumber) {
+            const element = document.getElementById(elementId);
+            let startTimestamp;
+
+            function easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
+
+            function formatNumber(number) {
+                // Add spaces every three digits
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            }
+
+            function updateCounter(timestamp) {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = (timestamp - startTimestamp) / duration;
+
+                const formattedNumber = formatNumber(Math.floor(easeOutCubic(progress) * targetNumber));
+                element.textContent = formattedNumber;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+
+            const duration = 2000; //2 s duration
+
+            // Check if the element is in the viewport
+            function isInViewport() {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+
+            // Start the counter when the element is in the viewport
+            function startCounterIfInView() {
+                if (isInViewport()) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    requestAnimationFrame(startCounterIfInView);
+                }
+            }
+
+            startCounterIfInView();
+        }
+
+        //place the stats from db-ops
+        const moviesTarget = document.getElementById('movies').textContent;
+        const membersTarget = document.getElementById('clients').textContent;
+        const reviewsTarget = document.getElementById('reviews').textContent;
+
+        countToNumber('moviesCounter', moviesTarget);
+        countToNumber('membersCounter', membersTarget);
+        countToNumber('reviewsCounter', reviewsTarget);
+    </script>
+</body>
+
+
+
+
+
+
+
+
+{%endblock%}

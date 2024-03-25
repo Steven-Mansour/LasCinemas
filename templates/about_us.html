@@ -1,0 +1,42 @@
+{% extends "template2.html" %}
+
+{% block title %}About Us - Las Cinemas{% endblock %}
+
+{%block name%}{{username}}{%endblock%}
+{%block balance%}${{balance}}{%endblock%}
+
+{% block body %}
+<div class="py-8 px-4 sm:px-8 bg-neutral-200 dark:bg-neutral-700">
+    <section class="bg-gradient-to-r from-[#ee7724] via-[#dd3675] to-[#b44593] px-4 py-8">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="shadow-lg shadow-black rounded-lg bg-white shadow-lg dark:bg-neutral-800 p-4 md:p-10">
+                    <p class="text-lg text-neutral-800 dark:text-neutral-200">
+                        Welcome to Las Cinemas, your premier destination for the ultimate movie experience in Lebanon. We are dedicated to bringing you the latest blockbuster films, independent features, and timeless classics in a state-of-the-art cinematic environment.
+                    </p>
+
+                    <p class="text-lg mt-4 text-neutral-800 dark:text-neutral-200">
+                        Our cinema is more than just a place to watch movies; it's a hub for entertainment and relaxation. With comfortable seating, high-quality audiovisual technology, and a variety of concessions, we ensure that your visit is enjoyable from start to finish.
+                    </p>
+
+                    <p class="text-lg mt-4 text-neutral-800 dark:text-neutral-200">
+                        At Las Cinemas, we are committed to providing a diverse selection of films to cater to all tastes. Whether you're a fan of action, romance, comedy, or the latest superhero adventures, our carefully curated movie lineup has something for everyone.
+                    </p>
+                    <br>
+                    <img class="w-full h-auto mb-4" src="{{url_for('static', filename='/Images/forAboutUs2.jpg')}}">
+                </div>
+                <div class="shadow-lg shadow-black rounded-lg bg-white shadow-lg dark:bg-neutral-800 p-4 md:p-10">
+                    <img class="w-full h-auto mb-4" src="{{url_for('static', filename='/Images/forAboutUs.jpg')}}">
+                    <p class="text-lg mt-4 text-neutral-800 dark:text-neutral-200">
+                        We take pride in offering an exceptional viewing experience for our patrons. Our team is dedicated to maintaining a clean and safe environment, and we're constantly upgrading our facilities to meet the highest standards of quality and comfort.
+                    </p>
+
+                    <p class="text-lg mt-4 text-neutral-800 dark:text-neutral-200">
+                        Experience the magic of the silver screen at Las Cinemas, where every frame tells a story and every visit is a memorable cinematic journey. Join us for the latest releases and timeless classics, and immerse yourself in the world of cinema.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

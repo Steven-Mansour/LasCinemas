@@ -1,0 +1,53 @@
+{% extends "template1.html" %}
+
+{%block title%} {%endblock%}
+
+{%block body%}
+
+<body class="h-screen ">
+
+  <div class="py-8 bg-neutral-200 dark:bg-neutral-700 font-poppins">
+    <section class="py-8 gradient-form  h-full bg-neutral-200 dark:bg-neutral-700">
+      <div class="container mx-auto h-full p-10 pt-2 ">
+        <div class="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
+          <div class="w-max  rounded-lg ">
+            <div class="block rounded-lg h-full shadow-pink-600/70 bg-white shadow-lg dark:bg-neutral-800">
+              <div class="g-0 lg:flex  lg:flex-wrap">
+
+
+                <div class="px-4 md:px-0 lg:w-max ">
+                  <div class="md:mx-6 md:p-12">
+                    <!--Logo-->
+                    <div class="text-center py-4 md:py-0">
+                      <a href="{{url_for('auth.admin_login')}}">
+                        <img class="mx-auto  w-48" src="{{url_for('static', filename='/Images/Logo.png')}}">
+                      </a>
+                      <h4 class="mb-12 mt-4 pb-1 text-xl font-poppins font-semibold">
+                        Welcome to Las Cinemas!
+                      </h4>
+                    </div>
+                    {%block form_content%} {%endblock%}
+
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  </section>
+
+  <!--Prevent resubmission  on refresh-->
+  <script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+  </div>
+
+  {%endblock%}
+
+  {%block footer_content%} {%endblock%}

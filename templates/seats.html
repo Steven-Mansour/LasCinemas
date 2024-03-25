@@ -1,0 +1,105 @@
+{%extends "template2.html"%}
+
+{%block title%} Seats {%endblock%}
+
+{%block name%} {{username}} {%endblock%}
+{%block balance%} ${{balance}} {%endblock%}
+
+{%block body%}
+<link href="{{url_for('static', filename='CSS/style.css')}}" rel="stylesheet">
+
+<body class='bg-neutral-200 dark:bg-neutral-400'>
+
+    <div class="text-center py-12 flex justify-between bg-neutral-200 dark:bg-neutral-400">
+        <div class="flex items-center">
+            <a class=" rounded-full ml-8 mr-4 md:mr-0 p-4 font-poppins  bg-white hover:bg-gray-200 shadow-md text-rose-500" href="{{url_for('screenings')}}">Back to screenings</a>
+        </div>
+        
+        <div class ="flex">
+            <img src="{{ url_for('static', filename='Icons/Screen.png') }}" class="object-cover w-60 ">
+        </div>
+
+        <div class="flex items-center opacity-0">
+            <a class=" rounded-full ml-8 mr-4 md:mr-0 p-4 font-poppins  bg-white text-rose-600" href="{{url_for('screenings')}}">Back to screenings</a>
+        </div>
+        
+        
+        
+    
+    </div>
+    
+    <div class="grid grid-cols-22 gap-2 py-12 px-4 bg-neutral-200 dark:bg-neutral-400 ">
+        {% for seat in allSeats %}
+        {% if (loop.index % 20 == 7 or loop.index % 20 == 15) %}
+        <!-- Add a space after the 6th and 14th seats in every row -->
+        <div class="col-span-1"></div>
+        {%endif%}
+        {% if seat in takenSeats %}
+        <form>
+            <div class="taken-seat group flex justify-center ">
+                <p
+                    class="hidden font-poppins text-center group-hover:block group-focus:block absolute bg-white p-2  rounded-full text-sm w-24 -mt-12 ">
+                    Seat is reserved</p>
+                <img src="{{ url_for('static', filename='Icons/TakenSeat.png') }}" class="object-cover">
+            </div>
+        </form>
+
+        {% else %}
+        <div class="available-seat hover:cursor-pointer">
+            <form id="{{seat[0]}}" method="post" action="{{url_for('reserve_seat')}}" name="screening"
+                onsubmit="return checkBalance()">
+                <input type="hidden" name="form_id" value="{{seat[0]}}">
+                <button type="submit">
+                    <img src="{{ url_for('static', filename='Icons/EmptySeat.png') }}"
+                        class="object-cover hover:scale-[1.2] transition-all duration-300">
+                </button>
+
+            </form>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <input type="hidden" id="balance" value="{{ balance }}">
+        <input type="hidden" id="price" value="{{ price }}">
+    </div>
+    <script>
+        function checkBalance() {
+            // Get the balance from the hidden input
+            var balance = parseFloat(document.getElementById('balance').value);
+
+            // Get the price from the hidden input
+            var price = parseFloat(document.getElementById('price').value);
+
+            // Perform the balance check
+            if (balance >= price) {
+                var confirmed = window.confirm("You have $" + balance + "\nThe ticket costs $" + price + "\nDo you want to proceed");
+
+                if (confirmed) {
+                    // User confirmed, allow form submission
+                    alert('Seat reserved successfully')
+                    return true;
+                } else {
+                    // User canceled, prevent form submission
+                    return false;
+                }
+            } else {
+                // Insufficient balance, show an alert and prevent form submission
+                alert("Insufficient balance. Please add funds to your account.");
+                return false;
+            }
+        }
+    </script>
+
+
+
+</body>
+
+
+
+
+
+
+
+
+{%endblock%}

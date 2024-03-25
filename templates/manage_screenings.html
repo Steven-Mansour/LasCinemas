@@ -1,0 +1,110 @@
+{% extends "template1.html" %}
+
+{%block title%} Manage Screenings {%endblock%}
+
+
+
+{%block body%}
+
+<body class="bg-neutral-200 dark:bg-neutral-700">
+    <div class="p-4 lg:p-16 font-poppins">
+        <h1 class="mb-16 text-4xl px-6 lg:px-0 font-poppins text-white"> Manage The Screenings</h1>
+        <a href="{{url_for('admin_home')}}"
+            class="mb-16 text-4xl px-6 lg:px-0 font-poppins text-white hover:text-orange-700 hover:text-5xl transition-all duration-300 underline">
+            Return
+            Home
+        </a>
+        {% set dates = screenings|groupby('date') %}
+
+        {% for date, screenings_per_date in dates %}
+        <h1 class="text-2xl font-semibold mb-4 text-white mt-12 px-6 lg:px-0">{{ date }}</h1>
+        <div
+            class="scroll-container overflow-x-scroll overflow-y-hidden whitespace-nowrap w-full scrollbar  scrollbar-thumb-pink-700 scrollbar-track-gray-100 ">
+            {% for screening in screenings_per_date %}
+            <div class="inline-block h-96  mt-6 mb-12 ">
+                <div class="relative group  mr-12">
+                    <div
+                        class="screening-card bg-white h-96 inline-block   rounded-md  shadow mb-4 group-hover:opacity-60 ">
+                        <div
+                            class="bg-pink-700 grid grid-cols-1 lg:grid-cols-2 gap-x-4 rounded-md text-overflow-hidden ">
+                            <div
+                                class="text-xl w-72 h-96 whitespace-normal break-all m-4 p-8 bg-white rounded-md overflow-y-hidden">
+                                <h2 class="text-2xl font-semibold mb-2 w-full">{{ screening[0] }}</h2>
+                                <p class="mt-4">Time: {{ screening['startTime'] }}</p>
+                                <p class="mt-4">Room: {{ screening['roomNb'] }}</p>
+                                <p class="mt-4">{{screening['operations']}} by {{screening['operatorID']}}</p>
+                                <p class="mt-4">Reserved seats: {{screening['reserved']}}</p>
+                            </div>
+
+
+
+                            <div
+                                class="container-fit h-96 overflow-hidden mt-4 hidden lg:flex pr-12  items-center  justify-end ">
+
+                                <img src="{{screening['poster']}}" class="object-contain  h-5/6 rounded-md"
+                                    alt="Screening Image">
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!--Trash bin-->
+                    <div
+                        class="absolute top-1/2 left-1/2  -translate-x-1/2 -translate-y-1/2  object-cover   opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <form id="{{screening['screeningID']}}" method="post" action="/delete_screening" name="screening">
+                            <input type="hidden" name="form_id" value="{{ screening['screeningID'] }}">
+                            <button type="button" onclick="confirmAction(this.value)" value ="{{ screening['screeningID'] }}" name="screening_id">
+                                <img src="{{url_for('static', filename ='Icons/Delete.png')}}" class="h-44">
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function confirmAction(formId) {
+            // Display a confirmation dialog
+            var confirmed = confirm("Are you sure you want to delete screening: " + formId + " ?");
+
+            // If the user clicks OK, submit the form
+            if (confirmed) {
+                document.getElementById(formId).submit();
+                alert('Screening deleted successfully');
+            }
+        }
+    </script>
+
+</body>
+
+
+
+<!--Prevent resubmission  on refresh-->
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+
+
+
+
+</div>
+
+
+
+{%endblock%}
+
+{%block footer_content%} {%endblock%}

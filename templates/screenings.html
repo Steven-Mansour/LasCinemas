@@ -1,0 +1,174 @@
+{% extends "template2.html" %}
+
+{% block title %} Screenings {% endblock %}
+
+{% block name %} {{ username }} {% endblock %}
+{% block balance %} ${{ balance }} {% endblock %}
+
+{% block body %}
+<!--link href="{{url_for('static', filename='CSS/style.css')}}" rel="stylesheet"-->
+
+<body class="bg-neutral-200 dark:bg-neutral-700">
+
+    <div class="flex items-center justify-center p-4 pt-12">
+        <button id="prevDate"
+            class="text-2xl rounded-full bg-rose-600 text-white border-2 border-white transition duration-300 transform hover:scale-110">
+            <img id="hoverImage1" src="{{url_for('static', filename ='Icons/left-arrow.png')}}" class="h-9">
+            <img id="defaultImage1" src="{{url_for('static', filename ='Icons/left-arrow (1).png')}}" class="h-9"
+                style="display: none;">
+        </button>
+        <h2 id="currentDate" class="text-2xl font-bold mx-4 text-rose-600 border-b-2 border-rose-600 pb-2">
+            Current Date
+        </h2>
+        <button id="nextDate"
+            class="text-2xl rounded-full bg-rose-600 text-white border-2 border-white transition duration-300 hover:scale-110">
+            <img id="hoverImage2" src="{{url_for('static', filename ='Icons/right-arrow.png')}}" class="h-9">
+            <img id="defaultImage2" src="{{url_for('static', filename ='Icons/right-arrow (1).png')}}" class="h-9"
+                style="display: none;">
+        </button>
+    </div>
+
+
+    <div class="flex flex-wrap justify-center p-8  lg:px-36 xl:px-72">
+        {% for movie_info in movies_info %}
+        <div class="relative flex items-stretch   mb-8 mr-8 border  rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 bg-white "
+            data-date="{{ movie_info['date'] }}">
+            <div class="w-full lg:flex ">
+                <div class="relative w-full lg:w-1/3 xl:w-1/4 overflow-hidden aspect-w-2 aspect-h-3 group">
+                    <a href="{{ movie_info['trailerLink'] }}" target="_blank">
+                        <img src="{{ movie_info['poster'] }}" alt="{{ movie_info['title'] }}"
+                            class="w-full h-full object-contain">
+                        <div
+                            class="absolute top-0 left-0 w-full h-full  flex items-center transition-all duration-300 justify-center opacity-0  group-hover:opacity-100">
+                            <div class="w-full h-full bg-black opacity-70 absolute z-10 "></div>
+                            <img src="{{url_for('static', filename='Icons/Trailer.png')}}" alt="Mask Image"
+                                class="z-50 ">
+                        </div>
+                        <div class="absolute top-0 left-0 text-white z-50">
+                            <img src="{{url_for('static', filename='Icons/star.png')}}" class="h-9 z-50">
+                            <p class="absolute top-0.5 left-2 p-2 text-sm text-black z-50">{{ movie_info['rating'] }}
+                            </p>
+                        </div>
+                    </a>
+
+                </div>
+
+
+
+                <div class="flex flex-col p-4 rounded-r-lg w-full lg:w-5/6">
+                    <div class="text-xl font-bold mb-2 font-poppins">{{ movie_info['title'] }}</div>
+                    <div class="bg-gray-200 w-fit p-2 rounded mb-2">
+                        <p class="text-sm font-poppins ">{{ movie_info['pg'] }}</p>
+                    </div>
+                    <p class="text-xs mb-1">{{ movie_info['genre'] }}</p>
+
+                    <div class="bg-gray-200 w-fit p-2 rounded mb-2">
+                        <p class="font-poppins text-xs">
+                            Start Time: {{ movie_info['startTime'] }} | Duration: {{ movie_info['duration'] }}
+                        </p>
+                    </div>
+
+                    <p class="text-xs mb-1 italic">{{ movie_info['actors'] }}</p>
+                    <p class="text-xs font-poppins mt-1 overflow-hidden lg:mb-0 w-full">{{ movie_info['description'] }}
+                    </p>
+
+                    <div class="mt-auto">
+                        <form id="{{movie_info['screeningID']}}" method="post" action="{{url_for('seats')}}"
+                            name="screening">
+                            <input type="hidden" name="form_id" value="{{movie_info['screeningID']}}">
+                            <button type="submit"
+                                class="bg-rose-600 hover:bg-rose-800 text-white font-bold py-2 px-4 rounded w-full">
+                                Book Ticket
+                            </button>
+                        </form>
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!--youtube video-->
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const screenings = document.querySelectorAll('[data-date]');
+            const currentDateElem = document.getElementById('currentDate');
+            let currentIdx = 0;
+            let currentDate = new Date();
+
+            function updateDate() {
+                currentDateElem.textContent = formatDate2(currentDate);
+                date = formatDate(currentDate)
+
+                // Hide all screenings
+                screenings.forEach(screening => {
+                    screening.style.display = 'none';
+                });
+
+                // Show screenings for the current date
+                screenings.forEach(screening => {
+                    if (screening.dataset.date === date) {
+                        screening.style.display = 'flex';
+                    }
+                });
+            }
+
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 since months are zero-based
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            function formatDate2(date) {
+                const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+                const dayOfWeek = daysOfWeek[date.getDay()];
+                const dayOfMonth = date.getDate();
+                const month = months[date.getMonth()];
+
+                return `${dayOfWeek} ${dayOfMonth}, ${month}`;
+            }
+
+            updateDate();
+
+            document.getElementById('prevDate').addEventListener('click', function () {
+                if (currentIdx > 0) {
+                    currentIdx--;
+                    currentDate.setDate(currentDate.getDate() - 1);
+                    updateDate();
+                }
+            });
+
+            document.getElementById('nextDate').addEventListener('click', function () {
+                if (currentIdx < 6) {
+                    currentIdx++;
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    updateDate();
+                }
+            });
+
+
+            function handleHover(element, hoverImageId, defaultImageId) {
+                element.addEventListener('mouseover', function () {
+                    document.getElementById(hoverImageId).style.display = 'none';
+                    document.getElementById(defaultImageId).style.display = 'block';
+                });
+
+                element.addEventListener('mouseout', function () {
+                    document.getElementById(hoverImageId).style.display = 'block';
+                    document.getElementById(defaultImageId).style.display = 'none';
+                });
+            }
+
+            handleHover(document.getElementById('prevDate'), 'hoverImage1', 'defaultImage1');
+            handleHover(document.getElementById('nextDate'), 'hoverImage2', 'defaultImage2');
+        });
+    </script>
+
+</body>
+{% endblock %}
